@@ -104,8 +104,7 @@ module.exports = {
           'error',
           {
             'items': 1,
-            'max-len': 100,
-            'semi': false
+            'max-len': 100
           }
         ],
       },

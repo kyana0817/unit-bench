@@ -1,0 +1,156 @@
+import { defineConfig, globalIgnores } from "eslint/config";
+import globals from "globals";
+import { fixupConfigRules } from "@eslint/compat";
+import importNewlines from "eslint-plugin-import-newlines";
+import tsParser from "@typescript-eslint/parser";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import js from "@eslint/js";
+import { FlatCompat } from "@eslint/eslintrc";
+
+const __filename = fileURLToPath(import.meta.url); // eslint-disable-line
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all
+});
+
+export default defineConfig([globalIgnores(["node_modules/*"]), {
+  extends: compat.extends("eslint:recommended"),
+  languageOptions: {
+    globals: {
+      ...globals.node,
+    },
+    
+    ecmaVersion: 8,
+    sourceType: "module",
+  },
+}, {
+  files: ["**/*.ts", "**/*.tsx"],
+  extends: fixupConfigRules(compat.extends(
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended",
+  )),
+  plugins: {
+    "import-newlines": importNewlines,
+  },
+  languageOptions: {
+    globals: {
+      ...globals.browser,
+      ...globals.node,
+    },
+    parser: tsParser,
+  },
+  settings: {
+    react: {
+      version: "detect",
+    },    
+    "import/resolver": {
+      typescript: {},
+    },
+  },
+  rules: {
+    "newline-per-chained-call": ["error", {
+      ignoreChainWithDepth: 1,
+    }],
+    indent: ["error", 2, {
+      SwitchCase: 1,
+    }],
+    "no-restricted-imports": ["error", {
+      patterns: ["@/features/*/*"],
+    }],
+    "max-len": ["error", 100, 2, {
+      ignoreUrls: true,
+      ignoreComments: false,
+      ignoreRegExpLiterals: true,
+      ignoreStrings: true,
+      ignoreTemplateLiterals: true,
+    }],
+    semi: ["error", "always"],
+    quotes: ["error", "single", {
+      allowTemplateLiterals: true,
+    }],
+    "linebreak-style": 0,
+    "eol-last": ["error", "always"],
+    "object-curly-spacing": ["error", "always"],
+    "no-use-before-define": "error",    
+    "no-multiple-empty-lines": ["error", {
+      max: 2,
+      maxEOF: 1,
+    }],    
+    "array-bracket-newline": ["error", {
+      multiline: true,
+      minItems: 3,
+    }],    
+    "object-curly-newline": ["error", {
+      ObjectExpression: {
+        minProperties: 3,
+        multiline: true,
+        consistent: true,
+      },      
+      ObjectPattern: {
+        multiline: true,
+        minProperties: 2,
+      },      
+      ImportDeclaration: {
+        multiline: true,
+      },      
+      ExportDeclaration: {
+        multiline: true,
+        minProperties: 3,
+      },
+    }],
+    "no-duplicate-imports": "off",
+    "import/order": ["error", {
+      groups: [
+        "builtin",
+        "external",
+        "internal",
+        "parent",
+        "sibling",
+        "index",
+        "object",
+        "type",
+      ],
+      "newlines-between": "never",
+      alphabetize: {
+        order: "asc",
+        caseInsensitive: true,
+      },
+    }],
+    "import/newline-after-import": ["error", {
+      count: 2,
+    }],
+    "import/no-duplicates": ["error", {
+      "prefer-inline": true,
+    }],
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "import/default": "off",
+    "import/no-named-as-default-member": "off",
+    "import/no-named-as-default": "off",
+    "@typescript-eslint/no-unused-vars": ["error", {
+      argsIgnorePattern: "^_",
+      varsIgnorePattern: "^_",
+      caughtErrorsIgnorePattern: "^_",
+    }],
+    "@typescript-eslint/consistent-type-imports": ["error", {
+      prefer: "type-imports",
+      fixStyle: "separate-type-imports",
+    }],
+    "@typescript-eslint/no-import-type-side-effects": "error",
+    "@typescript-eslint/explicit-function-return-type": ["off"],
+    "@typescript-eslint/explicit-module-boundary-types": ["off"],
+    "@typescript-eslint/no-empty-function": ["off"],
+    "@typescript-eslint/no-explicit-any": ["off"],
+    "@typescript-eslint/consistent-type-assertions": ["off"],
+    "import-newlines/enforce": ["error", {
+      "max-len": 100,
+      semi: true
+    }],
+  },
+}]);
