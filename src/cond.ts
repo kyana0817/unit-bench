@@ -24,8 +24,7 @@ group('src/cond.ts', () => {
       const array = Array.from({ length: 1e8 }, (_, i) => i);
       bench('forCacheLen', () => {
         forCacheLen(array);
-      })
-        .gc('inner');
+      }).gc('inner');
       
       bench('forNoCacheLen', () => {
         forNoCacheLen(array);

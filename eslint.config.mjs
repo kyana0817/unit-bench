@@ -7,6 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
+import stylistic from '@stylistic/eslint-plugin'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,6 +38,7 @@ export default defineConfig([globalIgnores(["node_modules/*", "esm/*", "lib/*"])
     "plugin:@typescript-eslint/recommended",
   )),
   plugins: {
+    '@stylistic': stylistic,
     "import-newlines": importNewlines,
   },
   languageOptions: {
@@ -55,16 +57,13 @@ export default defineConfig([globalIgnores(["node_modules/*", "esm/*", "lib/*"])
     },
   },
   rules: {
-    "newline-per-chained-call": ["error", {
-      ignoreChainWithDepth: 1,
+    "@stylistic/newline-per-chained-call": ["error", {
+      ignoreChainWithDepth: 2,
     }],
-    indent: ["error", 2, {
+    "@stylistic/indent": ["error", 2, {
       SwitchCase: 1,
     }],
-    "no-restricted-imports": ["error", {
-      patterns: ["@/features/*/*"],
-    }],
-    "max-len": ["error", 80, 2, {
+    "@stylistic/max-len": ["error", 80, 2, {
       tabWidth: 2,
       ignoreUrls: true,
       ignoreComments: false,
@@ -72,23 +71,23 @@ export default defineConfig([globalIgnores(["node_modules/*", "esm/*", "lib/*"])
       ignoreStrings: true,
       ignoreTemplateLiterals: true,
     }],
-    semi: ["error", "always"],
-    quotes: ["error", "single", {
+    "@stylistic/semi": ["error", "always"],
+    "@stylistic/quotes": ["error", "single", {
       allowTemplateLiterals: true,
     }],
-    "linebreak-style": 0,
-    "eol-last": ["error", "always"],
-    "object-curly-spacing": ["error", "always"],
+    "@stylisticlinebreak-style": 0,
+    "@stylistic/eol-last": ["error", "always"],
+    "@stylistic/object-curly-spacing": ["error", "always"],
     "no-use-before-define": "error",    
-    "no-multiple-empty-lines": ["error", {
+    "@stylistic/no-multiple-empty-lines": ["error", {
       max: 2,
       maxEOF: 1,
     }],    
-    "array-bracket-newline": ["error", {
+    "@stylistic/array-bracket-newline": ["error", {
       multiline: true,
       minItems: 3,
     }],    
-    "object-curly-newline": ["error", {
+    "@stylistic/object-curly-newline": ["error", {
       ObjectExpression: {
         minProperties: 3,
         multiline: true,
