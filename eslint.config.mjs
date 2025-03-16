@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
 
-const __filename = fileURLToPath(import.meta.url); // eslint-disable-line
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -16,14 +16,14 @@ const compat = new FlatCompat({
   allConfig: js.configs.all
 });
 
-export default defineConfig([globalIgnores(["node_modules/*"]), {
+export default defineConfig([globalIgnores(["node_modules/*", "esm/*", "lib/*"]), {
   extends: compat.extends("eslint:recommended"),
   languageOptions: {
     globals: {
       ...globals.node,
     },
     
-    ecmaVersion: 8,
+    ecmaVersion: 2022,
     sourceType: "module",
   },
 }, {
@@ -64,7 +64,8 @@ export default defineConfig([globalIgnores(["node_modules/*"]), {
     "no-restricted-imports": ["error", {
       patterns: ["@/features/*/*"],
     }],
-    "max-len": ["error", 100, 2, {
+    "max-len": ["error", 80, 2, {
+      tabWidth: 2,
       ignoreUrls: true,
       ignoreComments: false,
       ignoreRegExpLiterals: true,
@@ -149,7 +150,7 @@ export default defineConfig([globalIgnores(["node_modules/*"]), {
     "@typescript-eslint/no-explicit-any": ["off"],
     "@typescript-eslint/consistent-type-assertions": ["off"],
     "import-newlines/enforce": ["error", {
-      "max-len": 100,
+      "max-len": 80,
       semi: true
     }],
   },
